@@ -1,0 +1,26 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<SelectDialog
+		title="{i18n>rendiciones}"
+		items="{path: 'localModel>/listadoRendiciones', templateShareable: false }"
+		customData:search='U_UPP_DESREN'
+		customData:key='U_UPP_NROREN'
+		customData:token='U_UPP_NROREN'
+		customData:des='U_UPP_NROREN'
+		
+		search="onValueHelpSearch"
+		liveChange="onValueHelpSearch"
+		confirm="onValueHelpConfirm"
+		cancel="onValueHelpClose"
+		growingThreshold="1000"
+		showClearButton="true">
+		<StandardListItem
+			selected="{localModel>Selected}"
+			iconDensityAware="false"
+			iconInset="false"
+			description="{localModel>U_UPP_NROREN}"
+			title="{localModel>U_UPP_DESREN}" />
+	</SelectDialog>
+</core:FragmentDefinition>

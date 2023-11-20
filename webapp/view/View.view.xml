@@ -1,0 +1,201 @@
+<mvc:View controllerName="rnd.srr.ui5.controller.View"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="page" showHeader="false" enableScrolling="false">
+        <content>
+        <Bar>
+				<contentRight>
+					<ObjectStatus icon="sap-icon://status-critical"/>
+				</contentRight>
+				<contentLeft>
+                    <Button icon="sap-icon://nav-back" press="onNavBack"/>
+					<Label text="{i18n>title}" ></Label>
+                </contentLeft>
+			</Bar>
+            <f:SimpleForm
+        id="reviewAcces"
+        layout="ColumnLayout"
+        labelSpanXL="12"
+        labelSpanL="12"
+        labelSpanM="12"
+        labelSpanS="12"
+        adjustLabelSpan="false"
+        emptySpanXL="0"
+        emptySpanL="0"
+        emptySpanM="0"
+        emptySpanS="0"
+        columnsXL="2"
+        columnsL="2"
+        columnsM="2"
+        singleContainerFullSize="false"
+    >
+        <f:content>
+            <Label text="{i18n>nroRendicion}" required="true" />
+            <MultiInput id="multiInputRendicion"
+                selectedKey="{localModel>/documento/CardCode}"
+                customData:dialog='Rendicion'
+                
+                valueHelpRequest="onValueHelpOpen"
+                valueState="{localModel>/ValueState/solicitanteVs}"
+                valueStateText="{localModel>/ValueState/solicitanteVst}">
+                <core:Item key="{CardCode}" text="{CardName}" />
+            </MultiInput>
+            <Label
+                text="{i18n>tipoSolicitud}"
+                required="true"
+            />
+            <Select
+                selectedKey="{localModel>/documento/tipoSolicitud}"
+                items="{ path:'localModel>/listadoTipoSolicitud' }"
+                class="borderInput"
+                forceSelection="false"
+                valueState="{localModel>/ValueState/tipoSolicitudVs}"
+                valueStateText="{localModel>/ValueState/tipoSolicitudVst}"
+            >
+                <core:Item
+                    key="{localModel>Code}"
+                    text="{localModel>Name}"
+                />
+            </Select>
+            <Label text="{i18n>descripcionRendicion}" />
+            <TextArea
+                class="textAreaStyle borderInput"
+                value="{localModel>/documento/descripcionRendicion}"
+                rows="4"
+            />
+            <Label text="{i18n>solicitante}" required="true" />
+            <MultiInput id="multiInput"
+                selectedKey="{localModel>/documento/CardCode}"
+                customData:dialog='Solicitante'
+                customData:path='/documento/nombreSolicitante'
+                customData:path2='/documento/docType'
+                valueHelpRequest="onValueHelpOpen"
+                valueState="{localModel>/ValueState/solicitanteVs}"
+                valueStateText="{localModel>/ValueState/solicitanteVst}">
+                <core:Item key="{CardCode}" text="{CardName}" />
+            </MultiInput>
+            <Label text="{i18n>nombreSolicitud}" />
+            <Input
+                enabled="false"
+                class="textAreaStyle borderInput"
+                value="{localModel>/documento/nombreSolicitante}"
+            />
+            <Label
+                text="{i18n>departamento}"
+                required="true"
+            />
+            <Select
+                selectedKey="{localModel>/documento/departamento}"
+                items="{ path:'localModel>/listadoDepartamento' }"
+                class="borderInput"
+                forceSelection="false"
+                valueState="{localModel>/ValueState/departamentoVs}"
+                valueStateText="{localModel>/ValueState/departamentoVst}"
+            >
+                <core:Item
+                    key="{localModel>Code}"
+                    text="{localModel>Name}"
+                />
+            </Select>
+            <Label
+                text="{i18n>medioPago}"
+                required="true"
+            />
+            <Select
+                selectedKey="{localModel>/documento/medioPago}"
+                items="{ path:'localModel>/listadoMedioPago' }"
+                class="borderInput"
+                forceSelection="false"
+                valueState="{localModel>/ValueState/medioPagoVs}"
+                valueStateText="{localModel>/ValueState/medioPagoVst}"
+            >
+                <core:Item
+                    key="{localModel>Code}"
+                    text="{localModel>Name}"
+                />
+            </Select>
+            <Label
+                text="{i18n>moneda}"
+                required="true"
+            />
+            <Select
+                selectedKey="{localModel>/documento/moneda}"
+                items="{ path:'localModel>/listadoMoneda' }"
+                class="borderInput"
+                forceSelection="false"
+                valueState="{localModel>/ValueState/monedaVs}"
+                valueStateText="{localModel>/ValueState/monedaVst}"
+            >
+                <core:Item
+                    key="{localModel>Code}"
+                    text="{localModel>Name}"
+                />
+            </Select>
+            <Label text="{i18n>monto}" />
+            <Input
+                value="{localModel>/documento/monto}"
+                type="Number"
+                class="textAreaStyle borderInput"
+                textAlign="End"
+                textDirection="LTR"
+                valueState="{localModel>/ValueState/montoVs}"
+                valueStateText="{localModel>/ValueState/montoVst}"
+            />
+            <Label text="{i18n>fechaSistema}" />
+            <DatePicker enabled="false"
+					change="handleChange"
+					value="{
+						'path': 'localModel>/documento/fechaSistema',
+						'type': 'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'dd/MM/yyyy'
+						}
+					}"/>
+            <Label text="{i18n>fechaDocumento}" required="true" />
+            <DatePicker
+                    valueState="{localModel>/ValueState/fechaDocumentoVs}"
+                    valueStateText="{localModel>/ValueState/fechaDocumentoVst}"
+					change="handleChange"
+					value="{
+						'path': 'localModel>/documento/fechaDocumento',
+						'type': 'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'dd/MM/yyyy'
+						}
+					}"/>
+            <Label text="{i18n>fechaPropuesta}" required="true" />
+            <DatePicker
+                    valueState="{localModel>/ValueState/fechaPropuestaVs}"
+                    valueStateText="{localModel>/ValueState/fechaPropuestaVst}"
+					change="handleChange"
+					value="{
+						'path': 'localModel>/documento/fechaPropuesta',
+						'type': 'sap.ui.model.type.Date',
+						'formatOptions': {
+							'pattern': 'dd/MM/yyyy'
+						}
+					}"/>
+            <Label text="{i18n>comentario}" />
+            <TextArea
+                class="textAreaStyle borderInput"
+                value="{localModel>/documento/comentarios}"
+                rows="4"
+            />
+        </f:content>
+    </f:SimpleForm>
+        </content>
+        <footer>
+<OverflowToolbar id="otbFooter">
+<ToolbarSpacer/>
+<Button type="Accept" text="{i18n>crearDocumento}" press="onCrearDocumento" icon="sap-icon://save">
+<layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+</Button>
+<Button type="Reject" text="{i18n>cancalar}" icon="sap-icon://cancel">
+<layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+</Button>
+
+</OverflowToolbar>
+</footer>
+    </Page>
+</mvc:View>

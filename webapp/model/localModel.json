@@ -1,0 +1,76 @@
+{
+    "tipoRnd": [
+        {
+            "OptionId": 1,
+            "OptionName": "viático"
+        },
+        {
+            "OptionId": 2,
+            "OptionName": "recibo provisional"
+        },
+        {
+            "OptionId": 3,
+            "OptionName": "gasto urgente"
+        },
+        {
+            "OptionId": 4,
+            "OptionName": "orden de viaje"
+        }
+    ],
+    "departamento": [
+        {
+            "OptionId": 1,
+            "OptionName": "Lima"
+        },
+        {
+            "OptionId": 2,
+            "OptionName": "Callao"
+        }
+    ],
+    "estados": [
+        {
+            "OptionId": 1,
+            "OptionName": "Abierto"
+        },
+        {
+            "OptionId": 2,
+            "OptionName": "Cerrado"
+        },
+        {
+            "OptionId": 3,
+            "OptionName": "Error Mig SR"
+        },
+        {
+            "OptionId": 4,
+            "OptionName": "Error Mig RD"
+        },
+        {
+            "OptionId": 5,
+            "OptionName": "Autorizado SR"
+        },
+        {
+            "OptionId": 6,
+            "OptionName": "Autorizado RD"
+        },
+        {
+            "OptionId": 7,
+            "OptionName": "Borrador"
+        },
+        {
+            "OptionId": 8,
+            "OptionName": "Aperturado"
+        },
+        {
+            "OptionId": 9,
+            "OptionName": "Devuelto"
+        },
+        {
+            "OptionId": 10,
+            "OptionName": "Rechazado RD"
+        },
+        {
+            "OptionId": 11,
+            "OptionName": "Rechazado SR"
+        }
+    ]
+}
