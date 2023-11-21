@@ -191,7 +191,7 @@
 <Button type="Accept" text="{i18n>crearDocumento}" press="onCrearDocumento" icon="sap-icon://save">
 <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
 </Button>
-<Button type="Reject" text="{i18n>cancalar}" icon="sap-icon://cancel">
+<Button type="Reject" text="{i18n>cancalar}" press="onCancelar" icon="sap-icon://cancel">
 <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
 </Button>
 

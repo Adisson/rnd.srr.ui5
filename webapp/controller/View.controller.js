@@ -51,6 +51,16 @@ sap.ui.define([
 
                 await Solicitud.obtenerRendiciones(email);
 
+                this._cargarSolicitante();    
+                
+                sap.ui.core.BusyIndicator.hide();
+            },
+            _cargarSolicitante: function(){
+                this.byId('multiInput').destroyTokens();
+
+                var userInfo = sap.ushell.Container.getService("UserInfo");
+                var email = userInfo.getEmail();
+                
                 var aListadoSolicitante = this.oLocalModel.getProperty("/listadoSolicitante");
                 var oSolicitante = aListadoSolicitante.find(d => d.E_Mail == email);
 
@@ -60,8 +70,6 @@ sap.ui.define([
                     this.oLocalModel.setProperty("/documento/nombreSolicitante", oSolicitante.CardName);
                     this.oLocalModel.setProperty("/documento/docType", oSolicitante.CardType);
                 }
-                
-                sap.ui.core.BusyIndicator.hide();
             },
             onInit: function () {
                 this.oLocalModel = this.getOwnerComponent().getModel("localModel");
@@ -136,6 +144,28 @@ sap.ui.define([
                 } catch (error) {
                     sap.m.MessageBox.success(this.getResourceBundle().getText('msgDocumentoCreado'));
                 }
+            },
+            onChangeMonto: function(e){
+                var sMonto = e.getSource().getValue();
+                e.getSource().setValue(parseFloat(sMonto).toFixed(2))
+            },
+            onCancelar: function(){
+                var that = this;
+                sap.m.MessageBox.confirm(this.getResourceBundle().getText('msgConfirmCancelar'), {
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: function(oAction) {
+                        if (oAction === sap.m.MessageBox.Action.YES) {
+                            var fecha = new Date();
+                            var oDocumento = {
+                                fechaSistema: fecha,
+                                anioActual: new Date(fecha.getFullYear(), 1,1)
+                            }
+                            that.oLocalModel.setProperty("/documento", oDocumento);
+
+                            that._cargarSolicitante();
+                        }
+                    }
+                });
             }
         });
     });
