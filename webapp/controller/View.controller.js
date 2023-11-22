@@ -120,7 +120,7 @@ sap.ui.define([
                     var email = userInfo.getEmail();
 
                     oDocumento.U_UPP_TPOOPER = "ER02";
-                    oDocumento.DocObjectCode = "bopot_IncomingPayments";
+                    oDocumento.DocObjectCode = "bopot_OutgoingPayments";
                     oDocumento.TaxDate = sTaxDate;
                     oDocumento.DueDate = sDueDate;
                     oDocumento.JournalRemarks = oData.comentarios;
