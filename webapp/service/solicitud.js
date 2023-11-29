@@ -106,6 +106,21 @@ sap.ui.define([
             ]*/
             
         },
+
+        obtenerCuenta: async function(cuenta){
+            const sPath = jQuery.sap.getModulePath("rnd.srr.ui5");
+
+            var resultado = null;
+            await $.ajax( {
+                type : "GET",
+                url : sPath + "/b1-sl-fertisur/UPP_CONFCUENTAS?$filter=Code eq '" + cuenta + "'",
+                success : function(data){
+                    resultado = data.value.length ? data.value[0] : null;
+                }.bind(this)
+            });
+
+            return resultado;
+        },
         
         crearDocumento: async function(oDocumento){
             const sPath = jQuery.sap.getModulePath("rnd.srr.ui5")

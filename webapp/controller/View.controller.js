@@ -49,7 +49,7 @@ sap.ui.define([
                 var userInfo = sap.ushell.Container.getService("UserInfo");
                 var email = userInfo.getEmail();
 
-                await Solicitud.obtenerRendiciones(email);
+                await Solicitud.obtenerRendiciones(email.split('@')[0]);
 
                 this._cargarSolicitante();    
                 
@@ -106,20 +106,25 @@ sap.ui.define([
                     oDocumento.U_UPP_NROREN = aRendiciones[0];
                     oDocumento.CardCode = aCardCode[0];
                     oDocumento.DocCurrency = oData.moneda;
-                    oDocumento.ControlAccount = "141301";
+                    
+                    var oCuenta = await Solicitud.obtenerCuenta('ER02');
+                    oDocumento.ControlAccount = oCuenta ? oCuenta.U_UPP_CUENTA : '141301';
+
+                    var oCuentaTransf = await Solicitud.obtenerCuenta('TR01');
+                    var oCuentaCash = await Solicitud.obtenerCuenta('TR02');
                     if (oData.medioPago == "1"){
-                        oDocumento.TransferAccount = "104103";
+                        oDocumento.TransferAccount = oCuentaTransf ? oCuentaTransf.U_UPP_CUENTA : '104103';
                         oDocumento.TransferDate = sDocDate;
                         oDocumento.TransferSum = oData.monto;
                     }else{
-                        oDocumento.CashAccount = "103101";
+                        oDocumento.CashAccount = oCuentaCash ? oCuentaCash.U_UPP_CUENTA : '103101';
                         oDocumento.CashSum = oData.monto;
                     }
                     
                     var userInfo = sap.ushell.Container.getService("UserInfo");
                     var email = userInfo.getEmail();
 
-                    oDocumento.U_UPP_TPOOPER = "ER02";
+                    oDocumento.U_UPP_TPOOPER = oCuenta ? oCuenta.Code : 'ER02';
                     oDocumento.DocObjectCode = "bopot_OutgoingPayments";
                     oDocumento.TaxDate = sTaxDate;
                     oDocumento.DueDate = sDueDate;
