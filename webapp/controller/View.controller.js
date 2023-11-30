@@ -135,6 +135,7 @@ sap.ui.define([
                     oDocumento.U_UPP_ESTADO = "P";
                     oDocumento.U_UPP_RECHAZADO = null;
                     oDocumento.U_UPP_USUARIO = email.split('@')[0];
+                    oDocumento.U_UPP_ERSTATUS = '*';
 
                     await Solicitud.crearDocumento(oDocumento);
                     

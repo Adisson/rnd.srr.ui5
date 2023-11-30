@@ -26,7 +26,8 @@
                     "action": "display",
                     "title": "Solicitud de Rembolso Rendición",
                     "subTitle": "",
-                    "info": ""
+                    "info": "",
+                    "icon": "sap-icon://request"
                 }
             }
         }
