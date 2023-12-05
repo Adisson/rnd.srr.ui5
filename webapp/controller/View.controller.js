@@ -161,17 +161,21 @@ sap.ui.define([
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(oAction) {
                         if (oAction === sap.m.MessageBox.Action.YES) {
-                            var fecha = new Date();
-                            var oDocumento = {
-                                fechaSistema: fecha,
-                                anioActual: new Date(fecha.getFullYear(), 1,1)
-                            }
-                            that.oLocalModel.setProperty("/documento", oDocumento);
-
-                            that._cargarSolicitante();
+                            that._IrListado();
                         }
                     }
                 });
-            }
+            },
+
+            _IrListado: function () {
+                var oCrossAppNavigator = sap.ushell.Container.getService('CrossApplicationNavigation');
+                var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: 'rndlrui5',
+                        action: 'display'
+                    }
+                })) || '';
+                sap.m.URLHelper.redirect(window.location.href.split('#')[0] + hash, false);
+            },
         });
     });
