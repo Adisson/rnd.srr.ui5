@@ -154,7 +154,11 @@ sap.ui.define([
                     this.byId('multiInput').destroyTokens();
 
                 } catch (error) {
-                    sap.m.MessageBox.success(this.getResourceBundle().getText('msgDocumentoCreado'));
+                    if (error.responseJSON){
+                        sap.m.MessageBox.error(error.responseJSON.error.message);
+                    }else{
+                        sap.m.MessageBox.error(this.getResourceBundle().getText('ocurrioError'));
+                    }
                 }
             },
             onChangeMonto: function(e){
