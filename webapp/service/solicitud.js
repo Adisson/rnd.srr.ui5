@@ -121,6 +121,24 @@ sap.ui.define([
 
             return resultado;
         },
+
+        obtenerParametrizacion: async function(form){
+            const sPath = jQuery.sap.getModulePath("rnd.srr.ui5")
+            await $.ajax( {
+                type : "GET",
+                url : sPath + "/b1-sl-fertisur/UPP_PARAM?$filter=U_UPP_FORM eq '" + form + "'",
+                success : function(data){
+                    this.oLocalModel.setProperty("/listadoParametrizacion", data.value);
+                }.bind(this)
+            });
+        },
+
+        obtenerParametrizacionAtributo: function(atributo){
+            var aListadoParametrizacion = this.oLocalModel.getProperty("/listadoParametrizacion");
+            var oParametrizacion = aListadoParametrizacion.find(d => d.U_UPP_ATRIBUTO == atributo);
+
+            return oParametrizacion;
+        },
         
         crearDocumento: async function(oDocumento){
             const sPath = jQuery.sap.getModulePath("rnd.srr.ui5")
