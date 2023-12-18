@@ -133,9 +133,9 @@ sap.ui.define([
             });
         },
 
-        obtenerParametrizacionAtributo: function(atributo){
+        obtenerParametrizacionCode: function(code){
             var aListadoParametrizacion = this.oLocalModel.getProperty("/listadoParametrizacion");
-            var oParametrizacion = aListadoParametrizacion.find(d => d.U_UPP_ATRIBUTO == atributo);
+            var oParametrizacion = aListadoParametrizacion.find(d => d.Code == code);
 
             return oParametrizacion;
         },
@@ -156,6 +156,17 @@ sap.ui.define([
                 {Code: '03',Name: 'EUR - EUROS'}
             ]*/
             
-        }
+        },
+
+        obtenerUsuario: async function(){
+            const sPath = jQuery.sap.getModulePath("rnd.srr.ui5")
+            await $.ajax( {
+                type : "GET",
+                url : sPath + "/user-api/attributes?multiValuesAsArrays=true",
+                success : function(data){
+                    this.oLocalModel.setProperty("/usuario", data);
+                }.bind(this)
+            });
+        },
     }
 });

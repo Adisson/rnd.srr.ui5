@@ -15,6 +15,11 @@
             "version": "1.10.1",
             "toolsId": "2dbd0c30-eb44-48ee-9f21-4bf8fc009b62"
         },
+        "dataSources": {
+            "mainService": {
+                "uri": "user-api/currentUser"
+            }
+        },
         "crossNavigation": {
             "inbounds": {
                 "intent1": {

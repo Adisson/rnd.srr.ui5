@@ -14,6 +14,16 @@ sap.ui.define([
         "use strict";
 
         return Controller.extend("rnd.srr.ui5.controller.View", {
+            U_UPP_NROREN: "31",
+            U_UPP_DESREN: "32",
+            U_UPP_DEP: "33",
+            U_UPP_TIPSOL: "34",
+            U_UPP_USUARIO: "35",
+            U_UPP_ESTADO: "36",
+            U_UPP_RECHAZADO: "37",
+            U_UPP_TPOOPER: "30",
+            U_UPP_ERSTATUS: "38",
+
             onLogin: async function(){
                 const sPath = jQuery.sap.getModulePath("rnd.srr.ui5")
                 let sSession = ""
@@ -45,11 +55,12 @@ sap.ui.define([
                 await Solicitud.obtenerMedioPago();
                 await Solicitud.obtenerMoneda();
                 await Solicitud.obtenerSolicitantes();
+                
+                await Solicitud.obtenerUsuario();
 
-                var userInfo = sap.ushell.Container.getService("UserInfo");
-                var email = userInfo.getEmail();
+                var oUsuario = this.oLocalModel.getProperty("/usuario");
 
-                await Solicitud.obtenerRendiciones(email.split('@')[0]);
+                await Solicitud.obtenerRendiciones(oUsuario.login_name.length ? oUsuario.login_name[0] : '');
 
                 this._cargarSolicitante();    
                 
@@ -76,6 +87,8 @@ sap.ui.define([
             },
             onCrearDocumento: async function(){
                 try {
+                    sap.ui.core.BusyIndicator.show();
+
                     var oData = this.oLocalModel.getProperty("/documento");
 
                     var bRequerido = Validacion.validarDocumento(this.oLocalModel, this.getResourceBundle());
@@ -97,21 +110,24 @@ sap.ui.define([
                         return oToken.getKey();
                     });
 
-                    
-    
                     var oDocumento = {};
                     
                     oDocumento.DocType = 'rCustomer'//oData.docType == 'C' ? 'rCustomer' : oData.docType == 'S' ? 'cSupplier' : '';
                     oDocumento.DocDate = sDocDate;
-                    oDocumento.U_UPP_NROREN = aRendiciones[0];
                     oDocumento.CardCode = aCardCode[0];
                     oDocumento.DocCurrency = oData.moneda;
                     
-                    await Solicitud.obtenerParametrizacion('02');
+                    await Solicitud.obtenerParametrizacion('03');
                     
-                    var oParamCuenta = Solicitud.obtenerParametrizacionAtributo('U_UPP_TPOOPER');
-                    var oParamEstado = Solicitud.obtenerParametrizacionAtributo('U_UPP_ESTADO');
-                    var oParamStatus = Solicitud.obtenerParametrizacionAtributo('U_UPP_ERSTATUS');
+                    var oParamNroRen = Solicitud.obtenerParametrizacionCode(this.U_UPP_NROREN);
+                    var oParamDesRen = Solicitud.obtenerParametrizacionCode(this.U_UPP_DESREN);
+                    var oParamDep = Solicitud.obtenerParametrizacionCode(this.U_UPP_DEP);
+                    var oParamTipoSol = Solicitud.obtenerParametrizacionCode(this.U_UPP_TIPSOL);
+                    var oParamUsuario = Solicitud.obtenerParametrizacionCode(this.U_UPP_USUARIO);
+                    var oParamEstado = Solicitud.obtenerParametrizacionCode(this.U_UPP_ESTADO);
+                    var oParamRechazado = Solicitud.obtenerParametrizacionCode(this.U_UPP_RECHAZADO);
+                    var oParamCuenta = Solicitud.obtenerParametrizacionCode(this.U_UPP_TPOOPER);
+                    var oParamStatus = Solicitud.obtenerParametrizacionCode(this.U_UPP_ERSTATUS);
 
                     var oCuenta = await Solicitud.obtenerCuenta(oParamCuenta.U_UPP_VALORO);
                     oDocumento.ControlAccount = oCuenta ? oCuenta.U_UPP_CUENTA : '141301';
@@ -127,21 +143,22 @@ sap.ui.define([
                         oDocumento.CashSum = oData.monto;
                     }
                     
-                    var userInfo = sap.ushell.Container.getService("UserInfo");
-                    var email = userInfo.getEmail();
-
-                    oDocumento.U_UPP_TPOOPER = oCuenta ? oCuenta.Code : 'ER02';
+                    var oUsuario = this.oModel.getProperty("/usuario");
+                    
                     oDocumento.DocObjectCode = oParamCuenta.U_UPP_OBJETOP;
                     oDocumento.TaxDate = sTaxDate;
                     oDocumento.DueDate = sDueDate;
                     oDocumento.JournalRemarks = oData.comentarios;
-                    oDocumento.U_UPP_DESREN = oData.descripcionRendicion;
-                    oDocumento.U_UPP_DEP = oData.departamento;
-                    oDocumento.U_UPP_TIPSOL = oData.tipoSolicitud;
-                    oDocumento.U_UPP_ESTADO = oParamEstado.U_UPP_VALORD;
-                    oDocumento.U_UPP_RECHAZADO = null;
-                    oDocumento.U_UPP_USUARIO = email.split('@')[0];
-                    oDocumento.U_UPP_ERSTATUS = oParamStatus.U_UPP_VALORD;
+
+                    oDocumento[oParamNroRen.U_UPP_ATRIBUTO] = aRendiciones[0];
+                    oDocumento[oParamCuenta.U_UPP_ATRIBUTO] = oCuenta ? oCuenta.Code : 'ER02';
+                    oDocumento[oParamDesRen.U_UPP_ATRIBUTO] = oData.descripcionRendicion;
+                    oDocumento[oParamDep.U_UPP_ATRIBUTO] = oData.departamento;
+                    oDocumento[oParamTipoSol.U_UPP_ATRIBUTO] = oData.tipoSolicitud;
+                    oDocumento[oParamEstado.U_UPP_ATRIBUTO] = oParamEstado.U_UPP_VALORD;
+                    oDocumento[oParamRechazado.U_UPP_ATRIBUTO] = null;
+                    oDocumento[oParamUsuario.U_UPP_ATRIBUTO] = oUsuario.login_name.length ? oUsuario.login_name[0] : '';
+                    oDocumento[oParamStatus.U_UPP_ATRIBUTO] = oParamStatus.U_UPP_VALORD;
 
                     await Solicitud.crearDocumento(oDocumento);
                     
@@ -153,12 +170,16 @@ sap.ui.define([
 
                     this.byId('multiInput').destroyTokens();
 
+                    sap.ui.core.BusyIndicator.hide();
+
                 } catch (error) {
                     if (error.responseJSON){
                         sap.m.MessageBox.error(error.responseJSON.error.message);
                     }else{
                         sap.m.MessageBox.error(this.getResourceBundle().getText('ocurrioError'));
                     }
+
+                    sap.ui.core.BusyIndicator.hide();
                 }
             },
             onChangeMonto: function(e){
