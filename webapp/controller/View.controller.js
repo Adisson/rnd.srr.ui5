@@ -143,7 +143,8 @@ sap.ui.define([
                         oDocumento.CashSum = oData.monto;
                     }
                     
-                    var oUsuario = this.oModel.getProperty("/usuario");
+                    var oUsuario = this.oLocalModel.getProperty("/usuario");
+                    
                     
                     oDocumento.DocObjectCode = oParamCuenta.U_UPP_OBJETOP;
                     oDocumento.TaxDate = sTaxDate;
